@@ -6,15 +6,12 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
     <script src="{{ url_for('static', filename='jquery.tagcanvas.js') }}"></script>
     <script>
-    $.fn.center = function () {
-        this.css("position","absolute");
-        this.css("top", Math.max(0, (($(window).height() - this.outerHeight()) / 2) + 
-                                                    $(window).scrollTop()) + "px");
-        this.css("left", Math.max(0, (($(window).width() - this.outerWidth()) / 2) + 
-                                                    $(window).scrollLeft()) + "px");
+    jQuery.fn.center = function () {
+    this.css("position","absolute");
+    this.css("top", Math.max(0, (($(window).height() - this.outerHeight()) / 2) + $(window).scrollTop()) + "px");
+    this.css("left", Math.max(0, (($(window).width() - this.outerWidth()) / 2) + $(window).scrollLeft()) + "px");
         return this;
-}
-    $(".container").center();
+    }
 
     function cloud() {
         if(!$('#cloud_canvas').tagcanvas({
@@ -25,36 +22,53 @@
             maxSpeed: 0.05
         })) {
             $('#cloud').hide();
+        } else {
+            $('#cloud').show();
         }
     }
+
+    function resize(){
+        var w = $("#content").width();
+        var h = $(window).innerHeight() - 50;
+
+        $("canvas").attr('width', w);
+        $("canvas").attr('height', h);
+    }
+
+    $(window).bind("resize", resize);
     $(document).ready(function() {
+        resize()
         $("#get_data").click(function(event){
                 event.preventDefault();
+                $('#cloud').hide();
                 handle = $("#handle").val();
-                console.log(handle);
+                type = $('input[name=values]:checked', 'form').val()
+                retweets = $("input[name=retweets]:", 'form').is(':checked')
                 
+                replies = $("input[name=replies]:", 'form').is(':checked')
+
                 $.ajax({
                     type: 'GET',
                     url: "/get_tweets/"+handle,
-                    data: { exclude_replies: "True", include_rts: "False" },
+                    data: { replies: +replies, include_rts: +retweets, type: type },
                     beforeSend:function(){
+                        
                         $('#ajax_panel').html('<div class="loading"><img src="{{ url_for('static', filename='loading.gif') }}" alt="Loading..." /></div>');
+                        $('#ajax_panel').center();
                         },
                     success:function(data) {
-                        console.log(data);
+                        // console.log(data);
                         $('#ajax_panel').empty();
                         $('canvas').empty();
                         $("canvas").append('<ul></ul>');
-                        
                         for (var key in data) {
-                            console.log(key);
-                            console.log(data[key]);
                             $("canvas ul").append("<li weight="+data[key]+"><a href=\"http://asd\">"+key+"</a></li>");
                         }
                         cloud();
                         },
                     error:function(){
                         $('#ajax_panel').html('<p class="error"><strong>Oops!</strong> Something went wrong.</p>');
+                        $('#ajax_panel').center();
   }
             });
             });
@@ -63,25 +77,63 @@
 </head>
 
 <body>
-    <div class="container">
+    <div id="pagewrap">
+    <aside id="sidebar">
         <header>
             <h1>Tweet Cloud</h1>
         </header>
         <form>
+            <div class="input_box">
             <label>@</label>
             <input type="text" id="handle" name="handle" placeholder="jishnu7" value="jishnu7" required />
             <input type="submit" id="get_data" value="Show Me!"/>
+            </div>
+
+            <div id="ajax_panel"></div>
+
+            <div class="options">
+            <h2>Values</h2>
+            <ul>
+            <li>
+            <input type="radio" id="word_count"
+ name="values" value="word_count" checked/>
+            <label for="word_count">Word Count</label>
+            </li>
+            <li><input type="radio" id="words"
+ name="values" value="words"/>
+            <label for="words">Words</label>
+            </li>
+            <li><input type="radio" id="hashtags"
+ name="values" value="hashtags"/>
+            <label for="hashtags">Hash Tags</label>
+            </li>
+            </div>
+
+            <div class="options">
+            <h2>Include</h2>
+            <ul>
+            <li><input type="checkbox" name="retweets"/>
+            <label for="retweets">Retweets</label>
+            </li>
+            <li>
+            <input type="checkbox" name="replies" />
+            <label for="replies">Replies</label>
+            </li>
+            <!--<label for="count">Number of tweets to analyze</label>
+            <input type="number" id="count" value="1000" max="1000"/>-->
+            </div>
         </form>
-        <div id="ajax_panel">
-        </div>
+        <footer>
+            <a href="http://twitter.com/jishnu7">@jishnu7</a>
+        </footer>
+    </aside>
+    <div id="content">
+        
         <div id="cloud">
-            <canvas width="500px" height= "500px" id="cloud_canvas">
+            <canvas  id="cloud_canvas">
              </canvas>
-         </div>
-    <div>
-    
+        </div>
+    </div>
+    </div>
 </body>
-<footer>
-<a href="http://twitter.com/jishnu7">@jishnu7</a>
-</footer>
 </html>

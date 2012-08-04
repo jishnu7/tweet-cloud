@@ -1,22 +1,13 @@
 * {
     font-family:'Open Sans',sans-serif;font-weight:300;
-    padding: 0;
-    margin: 0;
+
 }
 
-html, body {
-    width: 100%;
-    height: 100%;
-    position:relative;
-    background: #eee;
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section, canvas { 
+    display: block;
 }
 
-header {
-    margin-top: 15px;
-    margin-bottom: 15px;
-}
-
-input {
+input[type=text], input[type=submit] {
     border:1px solid #ccc;
     font-size:20px;
     min-height:30px;
@@ -31,19 +22,76 @@ input {
 
 input[type=text] {
     margin-right:5px;
-    width:200px;
+    width:150px;
 }
 
 a:link, a:visited, a:hover, a:active{
     color: #111;
+    text-decoration:none;
 }
 
-.container {
+header, footer {
     text-align:center;
+}
+
+h2 {
+    text-transform: uppercase;
+    font-size: 20px;
+    margin:25px 5px 5px 5px;
+}
+
+body {
+    background: #eee;
+    padding: 0;
+    margin: 0;
+}
+
+footer {
+    margin-top: 25px;
 }
 
 #ajax_panel {
     margin-top: 10px;
+    positon:absolute;
+}
+
+#pagewrap {
+    width: 95%;
+    margin: 15px auto;
+}
+
+#sidebar {
+    width: 25%;
+    float: left;
+}
+
+#content {
+    width: 70%;
+    float: left;
+}
+
+.options ul{
+    list-style-type:none;
+}
+
+@media screen and (max-width: 650px) {
+    #content {
+        width: auto;
+        float: none;
+        margin: 20px 0;
+    }
+
+    #sidebar{
+        width: 100%;
+        float: none;
+        margin: 0;
+        text-align:center;
+        clear:both;
+    }
+
+    .options li{
+        display:inline;
+    }
 }
 
 
