@@ -10,7 +10,7 @@ def hello():
 
 @app.route('/get_tweets/<handle>')
 def get_tweets(handle=""):
-    count = request.args.get('count', 1000, type=int)
+    count = request.args.get('count', 10, type=int)
     replies = request.args.get('replies', False, type=int)
     include_rts = request.args.get('include_rts', False, type=int)
 
@@ -57,10 +57,11 @@ def words(data):
     else:
         for tweet in data:
             # TODO: Need to clean words. Improve later
-            words = tweet['text'].split()
+            text = tweet['text'].replace(".", " ").replace(",", " ").replace("-", " ")
+            words = text.split()
             for word in words:
                 tweets[word] += 1
-    # Remove words which has frequency 1
+    # We dont need words with frequency 1
     tweets = {key: value for key, value in tweets.items() if value != 1}
     print dict(tweets)
     return tweets
@@ -72,7 +73,7 @@ def hashtags(data):
     else:
         for tweet in data:
             # TODO: Need to clean hashtags. Improve later
-            words = tweet['text'].split()
+            words = text.split()
             for word in words:
                 if word.startswith("#"):
                     tweets[word] += 1
