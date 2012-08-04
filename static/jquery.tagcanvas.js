@@ -869,7 +869,7 @@ jQuery.fn.tagcanvas = function(options,lctr) {
       // for some reason, using bind with mouseup isn't working in IE
       AddHandler('mousemove', MouseMove, this);
       AddHandler('mouseout', MouseOut, this);
-      AddHandler('mouseup', MouseClick, this);
+      //AddHandler('mouseup', MouseClick, this);
       if(jqt.wheelZoom) {
         AddHandler('mousewheel', MouseWheel, this);
         AddHandler('DOMMouseScroll', MouseWheel, this);
