@@ -2,6 +2,8 @@ import os, urllib, simplejson
 from flask import Flask, request, render_template, Response
 from collections import defaultdict
 
+STRINGS= [',', '.', '-', '"']
+
 app = Flask(__name__)
 
 @app.route('/')
@@ -10,7 +12,7 @@ def hello():
 
 @app.route('/get_tweets/<handle>')
 def get_tweets(handle=""):
-    count = request.args.get('count', 10, type=int)
+    count = request.args.get('count', 1000, type=int)
     replies = request.args.get('replies', False, type=int)
     include_rts = request.args.get('include_rts', False, type=int)
 
@@ -56,8 +58,10 @@ def words(data):
         return None
     else:
         for tweet in data:
-            # TODO: Need to clean words. Improve later
-            text = tweet['text'].replace(".", " ").replace(",", " ").replace("-", " ")
+            # TODO: Improve later
+            text = tweet['text']
+            for ch in STRINGS:
+                text = text.replace(ch, ' ')
             words = text.split()
             for word in words:
                 tweets[word] += 1
@@ -72,7 +76,10 @@ def hashtags(data):
         return None
     else:
         for tweet in data:
-            # TODO: Need to clean hashtags. Improve later
+            # TODO: Improve later
+            text = tweet['text']
+            for ch in STRINGS:
+                text = text.replace(ch, ' ')
             words = text.split()
             for word in words:
                 if word.startswith("#"):
