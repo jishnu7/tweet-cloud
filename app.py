@@ -56,11 +56,12 @@ def words(data):
         return None
     else:
         for tweet in data:
-            # TODO: Need to clean words. Improve later
-            words = tweet['text'].split()
+            # TODO: Bad method. Need to clean words. Improve later
+            text = tweet['text'].replace(".", " ").replace(",", " ").replace("-", " ")
+            words = text.split()
             for word in words:
                 tweets[word] += 1
-    # Remove words which has frequency 1
+    # We dont need words with frequency 1
     tweets = {key: value for key, value in tweets.items() if value != 1}
     print dict(tweets)
     return tweets
@@ -71,8 +72,9 @@ def hashtags(data):
         return None
     else:
         for tweet in data:
-            # TODO: Need to clean hashtags. Improve later
-            words = tweet['text'].split()
+            # TODO: Bad method. Need to clean hashtags. Improve later
+            text = tweet['text'].replace(".", " ").replace(",", " ").replace("-", " ")
+            words = text.split()
             for word in words:
                 if word.startswith("#"):
                     tweets[word] += 1
