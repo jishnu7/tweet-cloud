@@ -57,14 +57,20 @@
                         },
                     success:function(data) {
                         // console.log(data);
-                        $('#ajax_panel').empty();
-                        $('canvas').empty();
-                        $("canvas").append('<ul></ul>');
-                        for (var key in data) {
-                            $("canvas ul").append("<li weight="+data[key]+">"+key+"</li>");
-                        }
-                        cloud();
-                        },
+                        if(data!=null){
+                            $('#ajax_panel').empty();
+                            $('canvas').empty();
+                            $("canvas").append('<ul></ul>');
+                            for (var key in data) {
+                                $("canvas ul").append("<li weight="+data[key]+">"+key+"</li>");
+                            }
+                            cloud();
+                            }
+                         else {
+                            $('#ajax_panel').html('<p class="error"><strong>Invalid</strong> user name.</p>');
+                            $('#ajax_panel').center();
+                            }
+                            },
                     error:function(){
                         $('#ajax_panel').html('<p class="error"><strong>Oops!</strong> Something went wrong.</p>');
                         $('#ajax_panel').center();
@@ -84,7 +90,7 @@
         <form>
             <div class="input_box">
             <label>@</label>
-            <input type="text" id="handle" name="handle" placeholder="jishnu7" value="jishnu7" required />
+            <input type="text" id="handle" name="handle" placeholder="jishnu7" required />
             <input type="submit" id="get_data" value="Show Me!"/>
             </div>
 
@@ -96,7 +102,7 @@
             <li>
             <input type="radio" id="word_count"
  name="values" value="word_count" checked/>
-            <label for="word_count">Word Count</label>
+            <label for="word_count">Words per tweet</label>
             </li>
             <li><input type="radio" id="words"
  name="values" value="words"/>
@@ -104,7 +110,7 @@
             </li>
             <li><input type="radio" id="hashtags"
  name="values" value="hashtags"/>
-            <label for="hashtags">Hash Tags</label>
+            <label for="hashtags">Hash tags</label>
             </li>
             </div>
 
