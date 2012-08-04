@@ -43,15 +43,18 @@
                     success:function(data) {
                         console.log(data);
                         $('#ajax_panel').empty();
-                        $("canvas").append('<ul>');
+                        $('canvas').empty();
+                        $("canvas").append('<ul></ul>');
+                        
                         for (var key in data) {
-                           $("canvas").append("<li weight="+data[key]+'><a href="http://asd">'+key+"</a></li>");
+                            console.log(key);
+                            console.log(data[key]);
+                            $("canvas ul").append("<li weight="+data[key]+"><a href=\"http://asd\">"+key+"</a></li>");
                         }
-                        $("canvas").append($('</ul>'));
                         cloud();
                         },
                     error:function(){
-                        $('#ajax_panel').html('<p class="error"><strong>Oops!</strong> Try that again in a few moments.</p>');
+                        $('#ajax_panel').html('<p class="error"><strong>Oops!</strong> Something went wrong.</p>');
   }
             });
             });
@@ -72,7 +75,7 @@
         <div id="ajax_panel">
         </div>
         <div id="cloud">
-            <canvas width="500" height="500" id="cloud_canvas">
+            <canvas id="cloud_canvas">
              </canvas>
          </div>
     <div>

@@ -1,5 +1,5 @@
 import os, urllib, simplejson
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, Response
 from collections import defaultdict
 
 app = Flask(__name__)
@@ -33,7 +33,9 @@ def get_tweets(handle=""):
             length = len(tweet['text'].split())
             tweet_count[length] += 1
     print dict(tweet_count)
-    return simplejson.dumps(tweet_count)
+    json = simplejson.dumps(tweet_count)
+    resp = Response(json, status=200, mimetype='application/json')
+    return resp
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
