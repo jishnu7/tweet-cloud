@@ -1,8 +1,84 @@
 <!doctype html>
 <head>
-<title>Tweet Cloud</title>
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}" media="screen" />
+    <title>Tweet Cloud</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}" media="screen" />
+    <link href="//fonts.googleapis.com/css?family=Open+Sans:300" rel="stylesheet">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script src="{{ url_for('static', filename='jquery.tagcanvas.js') }}"></script>
+    <script>
+    $.fn.center = function () {
+        this.css("position","absolute");
+        this.css("top", Math.max(0, (($(window).height() - this.outerHeight()) / 2) + 
+                                                    $(window).scrollTop()) + "px");
+        this.css("left", Math.max(0, (($(window).width() - this.outerWidth()) / 2) + 
+                                                    $(window).scrollLeft()) + "px");
+        return this;
+}
+    $(".container").center();
+
+    function cloud() {
+        if(!$('#cloud_canvas').tagcanvas({
+            textColour: '#000',
+            outlineColour: '#ff00ff',
+            reverse: true,
+            depth: 0.8,
+            maxSpeed: 0.05
+        })) {
+            $('#cloud').hide();
+        }
+    }
+    $(document).ready(function() {
+        $("#get_data").click(function(event){
+                event.preventDefault();
+                handle = $("#handle").val();
+                console.log(handle);
+                
+                $.ajax({
+                    type: 'GET',
+                    url: "/get_tweets/"+handle,
+                    data: { exclude_replies: "True", include_rts: "False" },
+                    beforeSend:function(){
+                        $('#ajax_panel').html('<div class="loading"><img src="{{ url_for('static', filename='loading.gif') }}" alt="Loading..." /></div>');
+                        },
+                    success:function(data) {
+                        console.log(data);
+                        $('#ajax_panel').empty();
+                        $("canvas").append('<ul>');
+                        for (var key in data) {
+                           $("canvas").append("<li weight="+data[key]+'><a href="http://asd">'+key+"</a></li>");
+                        }
+                        $("canvas").append($('</ul>'));
+                        cloud();
+                        },
+                    error:function(){
+                        $('#ajax_panel').html('<p class="error"><strong>Oops!</strong> Try that again in a few moments.</p>');
+  }
+            });
+            });
+      });
+    </script>
 </head>
+
 <body>
-Hello World!
+    <div class="container">
+        <header>
+            <h1>Tweet Cloud</h1>
+        </header>
+        <form>
+            <label>@</label>
+            <input type="text" id="handle" name="handle" placeholder="jishnu7" value="jishnu7" required />
+            <input type="submit" id="get_data" value="Show Me!"/>
+        </form>
+        <div id="ajax_panel">
+        </div>
+        <div id="cloud">
+            <canvas width="500" height="500" id="cloud_canvas">
+             </canvas>
+         </div>
+    <div>
+    
 </body>
+<footer>
+<a href="http://twitter.com/jishnu7">@jishnu7</a>
+</footer>
+</html>

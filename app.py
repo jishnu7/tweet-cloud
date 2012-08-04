@@ -32,7 +32,7 @@ def get_tweets(handle=""):
         for tweet in result:
             length = len(tweet['text'].split())
             tweet_count[length] += 1
-
+    print dict(tweet_count)
     return simplejson.dumps(tweet_count)
 
 if __name__ == '__main__':

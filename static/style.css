@@ -1,0 +1,48 @@
+* {
+    font-family:'Open Sans',sans-serif;font-weight:300;
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    width: 100%;
+    position:relative;
+    background: #eee;
+}
+
+header {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+input {
+    border:1px solid #ccc;
+    font-size:20px;
+    min-height:30px;
+    padding:5px;
+    outline: none;
+    border-radius:5px;
+    -webkit-border-radius:5px;
+    -moz-border-radius:5px;
+    -o-border-radius:5px;
+    -ms-border-radius:5px;
+}
+
+input[type=text] {
+    margin-right:5px;
+    width:200px;
+}
+
+a:link, a:visited, a:hover, a:active{
+    color: #111;
+}
+
+.container {
+    text-align:center;
+}
+
+#ajax_panel {
+    margin-top: 10px;
+}
+
+
