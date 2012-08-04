@@ -16,7 +16,7 @@
     function cloud() {
         if(!$('#cloud_canvas').tagcanvas({
             textColour: '#000',
-            outlineColour: '#ff00ff',
+            outlineColour: '#000',
             reverse: true,
             depth: 0.8,
             maxSpeed: 0.05
@@ -62,7 +62,7 @@
                         $('canvas').empty();
                         $("canvas").append('<ul></ul>');
                         for (var key in data) {
-                            $("canvas ul").append("<li weight="+data[key]+"><a href=\"http://asd\">"+key+"</a></li>");
+                            $("canvas ul").append("<li weight="+data[key]+">"+key+"</li>");
                         }
                         cloud();
                         },

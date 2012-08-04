@@ -764,9 +764,9 @@ TCproto.Wheel = function(i) {
 TagCanvas.tc = {};
 
 jQuery.fn.tagcanvas = function(options,lctr) {
-  var links, ctr = lctr ? jQuery('#'+lctr) : this;
+  var links; ctr = lctr ? jQuery('#'+lctr) : this;
   if(doc.all && !lctr) return false; // IE must have external list
-  links = ctr.find('a');
+  links = ctr.find('li');
   if(Defined(window.G_vmlCanvasManager)) {
     this.each(function() { $(this)[0] = window.G_vmlCanvasManager.initElement($(this)[0]); });
     options.ie = parseFloat(navigator.appVersion.split('MSIE')[1]);
@@ -784,7 +784,7 @@ jQuery.fn.tagcanvas = function(options,lctr) {
       };
 
     // if using internal links, get only the links for this canvas
-    lctr || (links = $(this).find('a'));
+    lctr || (links = $(this).find('li'));
       
     jqt = new TagCanvas;
     for(i in options)
