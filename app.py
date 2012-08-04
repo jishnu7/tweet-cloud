@@ -10,7 +10,7 @@ def hello():
  
 @app.route('/get_tweets/<handle>') 
 def get_tweets(handle=""): 
-    count = request.args.get('count', 10, type=int)
+    count = request.args.get('count', 1000, type=int)
     exclude_replies = request.args.get('exclude_replies', True, type=bool)
     include_rts = request.args.get('include_rts', False, type=bool)
 
