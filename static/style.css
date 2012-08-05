@@ -34,6 +34,12 @@ header {
     text-align:center;
 }
 
+h1 {
+    font-size: 50px;
+    background: #33B5E5;
+    color: #eee;
+}
+
 h2 {
     text-transform: uppercase;
     font-size: 20px;
@@ -56,6 +62,8 @@ footer {
 footer p {
     position:absolute;
     bottom:0;
+    padding:0;
+    background: #33B5E5;
 }
 
 #ajax_panel {
