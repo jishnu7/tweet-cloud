@@ -12,7 +12,7 @@ def hello():
 
 @app.route('/get_tweets/<handle>')
 def get_tweets(handle=""):
-    count = request.args.get('count', 1000, type=int)
+    max_count = request.args.get('count', 1000, type=int)
     replies = request.args.get('replies', False, type=int)
     include_rts = request.args.get('include_rts', False, type=int)
 
@@ -21,16 +21,33 @@ def get_tweets(handle=""):
             'screen_name' : handle,
             'exclude_replies' : not replies,
             'include_rts' : include_rts,
-            'count' : count
+            'count': 200,
+            'trim_user': 'true'
             }
     print param
     
-    url = base_url + '?' + urllib.urlencode(param)
-    result = simplejson.load(urllib.urlopen(url))
+    result = []
+    length = 0
+    while length < max_count:
+        if length != 0:
+            param['max_id'] = result[-1]['id'] - 1
+            print param['max_id']
+
+        url = base_url + '?' + urllib.urlencode(param)
+        temp = simplejson.load(urllib.urlopen(url))
+        if length != 0 and temp[-1]['id'] == result[-1]['id']:
+            break
+
+        remaining = max_count - length
+        result.extend(temp[:remaining])
+        length = len(result)
+        print "Length---->",length
 
     type_value = request.args.get('type', 'word_count', type=str)
     data = values(type_value, result)
-    json = simplejson.dumps(data)
+    print dict(data)
+
+    json = simplejson.dumps({'data': data, 'count': length})
     resp = Response(json, status=200, mimetype='application/json')
     return resp
 
@@ -47,9 +64,12 @@ def word_count(data):
         return None
     else:
         for tweet in data:
-            length = len(tweet['text'].split())
+            text = tweet['text']
+            # TODO: Improve later
+            for ch in STRINGS:
+                text = text.replace(ch, ' ')
+            length = len(text.split())
             tweet_count[length] += 1
-    print dict(tweet_count)
     return tweet_count
 
 def words(data):
@@ -65,9 +85,8 @@ def words(data):
             words = text.split()
             for word in words:
                 tweets[word] += 1
-    # We dont need words with frequency 1
-    tweets = {key: value for key, value in tweets.items() if value != 1}
-    print dict(tweets)
+    # We dont need words with frequency < 3
+    tweets = {key: value for key, value in tweets.items() if value > 3}
     return tweets
 
 def hashtags(data):
@@ -84,7 +103,6 @@ def hashtags(data):
             for word in words:
                 if word.startswith("#"):
                     tweets[word] += 1
-    print dict(tweets)
     return tweets 
 
 if __name__ == '__main__':
