@@ -35,7 +35,7 @@ def get_tweets(handle=""):
 
         url = base_url + '?' + urllib.urlencode(param)
         temp = simplejson.load(urllib.urlopen(url))
-        if length != 0 and temp[-1]['id'] == result[-1]['id']:
+        if len(temp) == 0:
             break
 
         remaining = max_count - length
