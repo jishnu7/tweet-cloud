@@ -50,16 +50,15 @@ body {
 
 footer {
     margin-top: 5px;
-    position:relative;
     clear:both;
 }
 
 footer p {
-    position:absolute; bottom:0;
+    position:absolute;
+    bottom:0;
 }
 
 #ajax_panel {
-    margin-top: 10px;
     positon:absolute;
 }
 
