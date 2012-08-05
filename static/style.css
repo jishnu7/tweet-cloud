@@ -30,7 +30,7 @@ a:link, a:visited, a:hover, a:active{
     text-decoration:none;
 }
 
-header, footer {
+header {
     text-align:center;
 }
 
@@ -70,6 +70,10 @@ footer {
     float: left;
 }
 
+.result {
+    height:25px;
+    color: #999;
+}
 .options ul{
     list-style-type:none;
 }

@@ -37,9 +37,10 @@
     $(window).bind("resize", resize);
     $(document).ready(function() {
         resize()
-        $("#get_data").click(function(event){
+        $("#get_form").submit(function(event){
                 event.preventDefault();
                 $('#cloud').hide();
+                $('.result').empty();
                 handle = $("#handle").val();
                 type = $('input[name=values]:checked', 'form').val()
                 retweets = $("input[name=retweets]:", 'form').is(':checked')
@@ -61,10 +62,11 @@
                             $('#ajax_panel').empty();
                             $('canvas').empty();
                             $("canvas").append('<ul></ul>');
-                            for (var key in data) {
+                            for (var key in data['data']) {
                                 $("canvas ul").append("<li weight="+data[key]+">"+key+"</li>");
                             }
                             cloud();
+                            $(".result").html("Processed <b>"+data['count']+" tweets.");
                             }
                          else {
                             $('#ajax_panel').html('<p class="error"><strong>Invalid</strong> user name.</p>');
@@ -87,7 +89,7 @@
         <header>
             <h1>Tweet Cloud</h1>
         </header>
-        <form>
+        <form id="get_form">
             <div class="input_box">
             <label>@</label>
             <input type="text" id="handle" name="handle" placeholder="jishnu7" required />
@@ -106,7 +108,7 @@
             </li>
             <li><input type="radio" id="words"
  name="values" value="words"/>
-            <label for="words">Words</label>
+            <label for="words">Words (min frequency 3)</label>
             </li>
             <li><input type="radio" id="hashtags"
  name="values" value="hashtags"/>
@@ -128,6 +130,8 @@
             <input type="number" id="count" value="1000" max="1000"/>-->
             </div>
         </form>
+        <div class="result">
+        </div>
         <footer>
             <a href="http://twitter.com/jishnu7">@jishnu7</a>
         </footer>
