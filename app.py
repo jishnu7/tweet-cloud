@@ -103,6 +103,8 @@ def hashtags(data):
             for word in words:
                 if word.startswith("#"):
                     tweets[word] += 1
+    # We dont need words with frequency 1
+    tweets = {key: value for key, value in tweets.items() if value != 1}
     return tweets 
 
 if __name__ == '__main__':
