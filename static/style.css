@@ -30,14 +30,13 @@ a:link, a:visited, a:hover, a:active{
     text-decoration:none;
 }
 
-header {
+header, .input_box {
     text-align:center;
 }
 
 h1 {
     font-size: 50px;
-    background: #33B5E5;
-    color: #eee;
+    color: #33B5E5;
 }
 
 h2 {
