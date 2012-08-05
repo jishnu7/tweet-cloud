@@ -44,10 +44,18 @@ body {
     background: #eee;
     padding: 0;
     margin: 0;
+    width: 100%;
+    height:100%;
 }
 
 footer {
-    margin-top: 25px;
+    margin-top: 5px;
+    position:relative;
+    clear:both;
+}
+
+footer p {
+    position:absolute; bottom:0;
 }
 
 #ajax_panel {
