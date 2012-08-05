@@ -67,7 +67,8 @@
                                 $("canvas ul").append("<li weight="+tweet_data[key]+">"+key+"</li>");
                             }
                             cloud();
-                            $(".result").html("Processed <b>"+data['count']+" tweets.");
+                            plural = (data['count'] == 1) ? "tweet" : "tweets";
+                            $(".result").html("Processed <b>"+data['count']+" "+plural);
                             }
                          else {
                             $('#ajax_panel').html('<p class="error"><strong>Invalid</strong> user name.</p>');
