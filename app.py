@@ -84,7 +84,8 @@ def words(data):
                 text = text.replace(ch, ' ')
             words = text.split()
             for word in words:
-                tweets[word] += 1
+                if not word.startswith("#"):
+                    tweets[word] += 1
     # We dont need words with frequency < 3
     tweets = {key: value for key, value in tweets.items() if value > 3}
     return tweets
