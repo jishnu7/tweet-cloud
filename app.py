@@ -53,15 +53,17 @@ def get_tweets(handle=""):
 
         url = base_url + '?' + urllib.urlencode(param)
         temp = simplejson.load(urllib.urlopen(url))
+        if 'errors' in temp:
+            return None
         if len(temp) == 0:
             break
-
         remaining = max_count - length
         result.extend(temp[:remaining])
         length = len(result)
         print "Length---->",length
 
     type_value = request.args.get('type', 'word_count', type=str)
+
     data = values(type_value, result)
     print dict(data)
 
@@ -78,50 +80,41 @@ def values(option, data):
 
 def word_count(data):
     tweet_count = defaultdict(lambda:0)
-    if 'errors' in data:
-        return None
-    else:
-        for tweet in data:
-            text = tweet['text']
-            # TODO: Improve later
-            for ch in STRINGS:
-                text = text.replace(ch, ' ')
-            length = len(text.split())
-            tweet_count[length] += 1
+    for tweet in data:
+        text = tweet['text']
+        # TODO: Improve later
+        for ch in STRINGS:
+            text = text.replace(ch, ' ')
+        length = len(text.split())
+        tweet_count[length] += 1
     return tweet_count
 
 def words(data):
     tweets = defaultdict(lambda:0)
-    if 'errors' in data:
-        return None
-    else:
-        for tweet in data:
-            # TODO: Improve later
-            text = tweet['text']
-            for ch in STRINGS:
-                text = text.replace(ch, ' ')
-            words = text.split()
-            for word in words:
-                if not word.startswith("#"):
-                    tweets[word] += 1
+    for tweet in data:
+        # TODO: Improve later
+        text = tweet['text']
+        for ch in STRINGS:
+            text = text.replace(ch, ' ')
+        words = text.split()
+        for word in words:
+            if not word.startswith("#"):
+                tweets[word] += 1
     # We dont need words with frequency < 3
     tweets = {key: value for key, value in tweets.items() if value > 3}
     return tweets
 
 def hashtags(data):
     tweets = defaultdict(lambda:0)
-    if 'errors' in data:
-        return None
-    else:
-        for tweet in data:
-            # TODO: Improve later
-            text = tweet['text']
-            for ch in STRINGS:
-                text = text.replace(ch, ' ')
-            words = text.split()
-            for word in words:
-                if word.startswith("#"):
-                    tweets[word] += 1
+    for tweet in data:
+        # TODO: Improve later
+        text = tweet['text']
+        for ch in STRINGS:
+            text = text.replace(ch, ' ')
+        words = text.split()
+        for word in words:
+            if word.startswith("#"):
+                tweets[word] += 1
     # We dont need words with frequency 1
     tweets = {key: value for key, value in tweets.items() if value != 1}
     return tweets 
